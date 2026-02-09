@@ -108,13 +108,17 @@ button.active {
 /* ================= MUSIC PLAYER ================= */
 .player {
   max-width: 420px;
-  margin: 0 auto 30px;
+  margin: 0 15px 30px;
   border: 3px solid black;
   padding: 14px;
   font-family: "Comic Neue", cursive;
   display: none;
-  margin-left: 15px;
-  margin-right: 15px;
+}
+
+@media (min-width: 600px) {
+  .player {
+    margin: 0 auto 30px;
+  }
 }
 
 .player.playing {
@@ -140,6 +144,20 @@ button.active {
 
 
 /* ================= GALLERY ================= */
+.gallery-instruction {
+  text-align: center;
+  font-family: "Comic Neue", cursive;
+  font-size: clamp(18px, 4vw, 24px);
+  color: var(--red);
+  margin-bottom: 20px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
 .gallery {
   max-width: 1200px;
   margin: 0 auto;
@@ -151,7 +169,7 @@ button.active {
 
 @media (min-width: 600px) {
   .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 26px;
     padding: 40px 20px;
   }
@@ -163,6 +181,7 @@ button.active {
   background: white;
   transform: rotate(var(--r));
   transition: transform .25s ease;
+  cursor: pointer;
 }
 
 .card:active {
@@ -177,6 +196,9 @@ button.active {
 
 .card img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
   display: block;
 }
 
@@ -247,13 +269,15 @@ footer {
   <div class="bar" id="bar"></div>
 </div>
 
+<div class="gallery-instruction">stisni neku sliku</div>
+
 <section class="gallery" id="gallery">
-  <div class="card" style="--r:-5deg"><img src="nick1.jpg"></div>
-  <div class="card" style="--r:4deg"><img src="nick2.jpg"></div>
-  <div class="card" style="--r:-3deg"><img src="nick3.jpg"></div>
-  <div class="card" style="--r:6deg"><img src="nick4.jpg"></div>
-  <div class="card" style="--r:-7deg"><img src="nick5.jpg"></div>
-  
+  <div class="card" style="--r:-5deg" onclick="playSound()"><img src="nick1.jpg"></div>
+  <div class="card" style="--r:4deg" onclick="playSound()"><img src="nick2.jpg"></div>
+  <div class="card" style="--r:-3deg" onclick="playSound()"><img src="nick3.jpg"></div>
+  <div class="card" style="--r:6deg" onclick="playSound()"><img src="nick4.jpg"></div>
+  <div class="card" style="--r:-7deg" onclick="playSound()"><img src="nick5.jpg"></div>
+  <div class="card" style="--r:5deg" onclick="playSound()"><img src="nick6.jpg"></div>
 </section>
 
 <footer>
@@ -266,13 +290,20 @@ footer {
 
 
 <audio id="music" src="pesma.mp3"></audio>
+<audio id="clickSound" src="mjau.mp3"></audio>
 
 <script>
 const gallery = document.getElementById("gallery");
 const music = document.getElementById("music");
 const player = document.getElementById("player");
 const bar = document.getElementById("bar");
+const clickSound = document.getElementById("clickSound");
 let notesOn = false;
+
+function playSound() {
+  clickSound.currentTime = 0; // restart if already playing
+  clickSound.play();
+}
 
 function shuffle() {
   [...gallery.children]
